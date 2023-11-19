@@ -5,9 +5,13 @@ import { useForm } from "react-hook-form";
 import styles from "./form.module.css";
 
 type FormValues = {
-  username: string;
-  email: string;
-  channel: string;
+  username: string
+  email: string
+  channel: string
+  social: {
+    twitter: string
+    facebook: string
+  }
 };
 
 const DevTool: React.ElementType = dynamic(
@@ -24,7 +28,11 @@ const Tester: NextPage = () => {
       return {
         username: 'Batman',
         email: data.email,
-        channel: ''
+        channel: '',
+        social: {
+          twitter: '',
+          facebook: ''
+        }
       }
     }
   });
@@ -41,7 +49,7 @@ const Tester: NextPage = () => {
         onSubmit={handleSubmit(onSubmit)}
         noValidate
       >
-        <label htmlFor="username">Username</label>
+        <label className={styles.label} htmlFor="username">Username</label>
         <input
           type="text"
           id="username"
@@ -51,7 +59,7 @@ const Tester: NextPage = () => {
         />
         <p className={styles.error}>{errors.username?.message}</p>
 
-        <label htmlFor="email">Email</label>
+        <label className={styles.label} htmlFor="email">Email</label>
         <input
           type="email"
           id="email"
@@ -72,11 +80,23 @@ const Tester: NextPage = () => {
         />
         <p className={styles.error}>{errors.email?.message}</p>
 
-        <label htmlFor="channel">Channel</label>
+        <label className={styles.label} htmlFor="channel">Channel</label>
         <input type="text" id="channel" {...register("channel", {
           required: { value: true, message: 'Channel is required' }
         })} />
         <p className={styles.error}>{errors.channel?.message}</p>
+
+        <label className={styles.label} htmlFor="twitter">Twitter</label>
+        <input type="text" id="twitter" {...register("social.twitter", {
+          required: { value: true, message: 'Twitter is required' }
+        })} />
+        <p className={styles.error}>{errors.social?.twitter?.message}</p>
+
+        <label className={styles.label} htmlFor="facebook">Facebook</label>
+        <input type="text" id="facebook" {...register("social.facebook", {
+          required: { value: true, message: 'Facebook is required' }
+        })} />
+        <p className={styles.error}>{errors.social?.facebook?.message}</p>
 
         <button className={styles.button}>Submit</button>
       </form>
