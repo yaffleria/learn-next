@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { NextPage } from "next";
 import dynamic from "next/dynamic";
 import { useForm, useFieldArray } from "react-hook-form";
@@ -26,7 +27,7 @@ const DevTool: React.ElementType = dynamic(
 );
 
 const Tester: NextPage = () => {
-  const { register, handleSubmit, control, formState } = useForm<FormValues>({
+  const { register, handleSubmit, control, formState, watch } = useForm<FormValues>({
     defaultValues: async () => {
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/users/1"
@@ -59,8 +60,20 @@ const Tester: NextPage = () => {
     console.log("Form submitted", data);
   };
 
+  const watchForm = watch()
+  const watchUsername = watch(['username', 'email'])
+
+  useEffect(() => {
+    const subscription = watch((value) => {
+      console.log(value)
+    })
+    return () => subscription.unsubscribe()
+  }, [watch])
+
   return (
     <div className={styles.container}>
+      <h2>Watched Value: {watchUsername}</h2>
+      <h5>{JSON.stringify(watchForm)}</h5>
       <form
         className={styles.form}
         onSubmit={handleSubmit(onSubmit)}
