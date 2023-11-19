@@ -16,6 +16,8 @@ type FormValues = {
   phNumbers: {
     number: string;
   }[];
+  age: number;
+  dob: Date;
 };
 
 const DevTool: React.ElementType = dynamic(
@@ -34,13 +36,15 @@ const Tester: NextPage = () => {
       return {
         username: "Batman",
         email: data.email,
-        channel: "",
+        channel: "channel",
         social: {
-          twitter: "",
-          facebook: "",
+          twitter: "twitter",
+          facebook: "facebook",
         },
         phoneNumbers: ["", ""],
         phNumbers: [{ number: "" }],
+        age: 0,
+        dob: new Date()
       };
     },
   });
@@ -179,6 +183,32 @@ const Tester: NextPage = () => {
             </button>
           </div>
         </div>
+
+        <label className={styles.label} htmlFor="age">
+          Age
+        </label>
+        <input
+          type="number"
+          id="age"
+          {...register("age", {
+            valueAsNumber: true,
+            required: { value: true, message: "Age is required" },
+          })}
+        />
+        <p className={styles.error}>{errors.age?.message}</p>
+
+        <label className={styles.label} htmlFor="dob">
+          Date of birth
+        </label>
+        <input
+          type="date"
+          id="dob"
+          {...register("dob", {
+            valueAsDate: true,
+            required: { value: true, message: "Date of birth is required" },
+          })}
+        />
+        <p className={styles.error}>{errors.dob?.message}</p>
 
         <button className={styles.button}>Submit</button>
       </form>
