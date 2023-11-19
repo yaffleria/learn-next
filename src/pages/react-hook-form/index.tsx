@@ -17,10 +17,15 @@ const DevTool: React.ElementType = dynamic(
 
 const Tester: NextPage = () => {
   const { register, handleSubmit, control, formState } = useForm<FormValues>({
-    defaultValues: {
-      username: '',
-      email: '',
-      channel: ''
+    defaultValues: async () => {
+      const response = await fetch('https://jsonplaceholder.typicode.com/users/1')
+      const data = await response.json()
+      
+      return {
+        username: 'Batman',
+        email: data.email,
+        channel: ''
+      }
     }
   });
   const { errors } = formState
