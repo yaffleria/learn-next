@@ -44,6 +44,14 @@ const Tester: NextPage = () => {
               value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
               message: "Invalid email format ",
             },
+            validate: {
+              notAdmin: (fieldValue) => {
+                return (fieldValue !== 'admin@example.com' || "Enter a different email address")
+              },
+              notBlackList: (fieldValue) => {
+                return !fieldValue.endsWith('baddomain.com') || "This domain is not supported"
+              }
+            }
           })}
         />
         <p className={styles.error}>{errors.email?.message}</p>
