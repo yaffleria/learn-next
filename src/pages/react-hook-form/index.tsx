@@ -104,6 +104,7 @@ const Tester: NextPage = () => {
         <input
           type="text"
           id="username"
+          disabled
           {...register("username", {
             required: { value: true, message: "Username is required" },
           })}
@@ -158,7 +159,9 @@ const Tester: NextPage = () => {
           type="text"
           id="twitter"
           {...register("social.twitter", {
-            required: { value: true, message: "Twitter is required" },
+            // disabled: true,
+            // disabled: watch('channel') === '',
+            required: { value: true, message: "Twitter is required" }
           })}
         />
         <p className={styles.error}>{errors.social?.twitter?.message}</p>
