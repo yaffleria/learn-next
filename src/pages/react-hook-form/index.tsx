@@ -1,5 +1,5 @@
-import { DevTool } from "@hookform/devtools";
 import { NextPage } from "next";
+import dynamic from "next/dynamic";
 import { useForm } from "react-hook-form";
 
 import styles from "./form.module.css";
@@ -10,8 +10,19 @@ type FormValues = {
   channel: string;
 };
 
+const DevTool: React.ElementType = dynamic(
+  () => import('@hookform/devtools').then((module) => module.DevTool),
+  { ssr: false }
+)
+
 const Tester: NextPage = () => {
-  const { register, handleSubmit, control, formState } = useForm<FormValues>();
+  const { register, handleSubmit, control, formState } = useForm<FormValues>({
+    defaultValues: {
+      username: '',
+      email: '',
+      channel: ''
+    }
+  });
   const { errors } = formState
 
   const onSubmit = (data: FormValues) => {
