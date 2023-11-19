@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { NextPage } from "next";
 import dynamic from "next/dynamic";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, FieldErrors } from "react-hook-form";
 
 import styles from "./form.module.css";
 
@@ -63,6 +63,9 @@ const Tester: NextPage = () => {
   const onSubmit = (data: FormValues) => {
     console.log("Form submitted", data);
   };
+  const onError = (errors: FieldErrors<FormValues>) => {
+    console.log("Form Errors", errors)
+  }
 
   const handleGetValues = () => {
     console.log('Values', getValues())
@@ -95,7 +98,7 @@ const Tester: NextPage = () => {
       <h5>{JSON.stringify(watchForm)}</h5>
       <form
         className={styles.form}
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit, onError)}
         noValidate
       >
         <label className={styles.label} htmlFor="username">
