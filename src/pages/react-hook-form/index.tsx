@@ -27,7 +27,7 @@ const DevTool: React.ElementType = dynamic(
 );
 
 const Tester: NextPage = () => {
-  const { register, handleSubmit, control, formState, watch, getValues } = useForm<FormValues>({
+  const { register, handleSubmit, control, formState, watch, getValues, setValue } = useForm<FormValues>({
     defaultValues: async () => {
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/users/1"
@@ -64,6 +64,15 @@ const Tester: NextPage = () => {
     console.log('Values', getValues())
     console.log('Username', getValues('username'))
     console.log('Username and Channel', getValues(['username', 'channel']))
+  }
+
+  const handleSetValue = () => {
+    setValue('username', 'Devil')
+    setValue('channel', '', {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true
+    })
   }
 
   const watchForm = watch()
@@ -231,6 +240,7 @@ const Tester: NextPage = () => {
 
         <button className={styles.button}>Submit</button>
         <button type="button" onClick={handleGetValues}>Get values</button>
+        <button type="button" onClick={handleSetValue}>Set value</button>
       </form>
       <DevTool control={control} />
     </div>
