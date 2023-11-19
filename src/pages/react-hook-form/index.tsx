@@ -12,6 +12,7 @@ type FormValues = {
     twitter: string
     facebook: string
   }
+  phoneNumbers: string[]
 };
 
 const DevTool: React.ElementType = dynamic(
@@ -32,7 +33,8 @@ const Tester: NextPage = () => {
         social: {
           twitter: '',
           facebook: ''
-        }
+        },
+        phoneNumbers: ['', '']
       }
     }
   });
@@ -97,6 +99,12 @@ const Tester: NextPage = () => {
           required: { value: true, message: 'Facebook is required' }
         })} />
         <p className={styles.error}>{errors.social?.facebook?.message}</p>
+
+        <label className={styles.label} htmlFor="primary-phone">Primary phone number</label>
+        <input type="text" id="primary-phone" {...register("phoneNumbers.0")} />
+
+        <label className={styles.label} htmlFor="secondary-phone">Secondary phone number</label>
+        <input type="text" id="secondary-phone" {...register("phoneNumbers.1")} />
 
         <button className={styles.button}>Submit</button>
       </form>
