@@ -51,9 +51,14 @@ const Tester: NextPage = () => {
       };
     },
   });
-  const { errors, touchedFields, dirtyFields, isDirty, isValid } = formState;
+  const { errors, touchedFields, dirtyFields, isDirty, isValid, isSubmitting, isSubmitted, isSubmitSuccessful, submitCount } = formState;
 
-  console.log(touchedFields, dirtyFields, isDirty, isValid)
+  console.log({ isSubmitting })
+  console.log({ isSubmitted })
+  console.log({ isSubmitSuccessful})
+  console.log({ submitCount})
+
+  // console.log(touchedFields, dirtyFields, isDirty, isValid)
 
   const { fields, append, remove } = useFieldArray({
     name: "phNumbers",
@@ -248,7 +253,7 @@ const Tester: NextPage = () => {
         />
         <p className={styles.error}>{errors.dob?.message}</p>
 
-        <button className={styles.button} disabled={!isDirty || !isValid}>Submit</button>
+        <button className={styles.button} disabled={!isDirty || !isValid || isSubmitting}>Submit</button>
         <button type="button" onClick={handleGetValues}>Get values</button>
         <button type="button" onClick={handleSetValue}>Set value</button>
       </form>
