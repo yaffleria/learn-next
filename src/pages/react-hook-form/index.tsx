@@ -38,6 +38,7 @@ const Tester: NextPage = () => {
     getValues,
     setValue,
     reset,
+    trigger
   } = useForm<FormValues>({
     defaultValues: async () => {
       const response = await fetch(
@@ -59,7 +60,8 @@ const Tester: NextPage = () => {
         dob: new Date(),
       };
     },
-    mode: 'onBlur'
+    mode: 'onSubmit'
+    // mode: 'onBlur'
     // mode: 'onTouched'  // Trigger validation on the first blur event, after that on every change event
     // mode: 'onChange' // Trigger validation on every change, lots of re-render
     // mode: 'all'  // both blur and change event
@@ -301,6 +303,10 @@ const Tester: NextPage = () => {
         </button>
         <button type="button" onClick={() => reset()}>
           Reset
+        </button>
+        <button type="button" onClick={() => trigger()}>
+        {/* <button type="button" onClick={() => trigger('channel')}> */}
+          Validate
         </button>
       </form>
       <DevTool control={control} />
