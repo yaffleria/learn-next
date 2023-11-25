@@ -59,6 +59,10 @@ const Tester: NextPage = () => {
         dob: new Date(),
       };
     },
+    mode: 'onBlur'
+    // mode: 'onTouched'  // Trigger validation on the first blur event, after that on every change event
+    // mode: 'onChange' // Trigger validation on every change, lots of re-render
+    // mode: 'all'  // both blur and change event
   });
   const {
     errors,
