@@ -1,6 +1,6 @@
 // https://www.youtube.com/playlist?list=PLC3y8-rFHvwjmgBr1327BA5bVXoQH-w5s
 
-import { useEffect } from 'react'
+import { useEffect } from "react";
 import { NextPage } from "next";
 import dynamic from "next/dynamic";
 import { useForm, useFieldArray, FieldErrors } from "react-hook-form";
@@ -29,7 +29,16 @@ const DevTool: React.ElementType = dynamic(
 );
 
 const Tester: NextPage = () => {
-  const { register, handleSubmit, control, formState, watch, getValues, setValue } = useForm<FormValues>({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState,
+    watch,
+    getValues,
+    setValue,
+    reset,
+  } = useForm<FormValues>({
     defaultValues: async () => {
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/users/1"
@@ -47,16 +56,26 @@ const Tester: NextPage = () => {
         phoneNumbers: ["", ""],
         phNumbers: [{ number: "" }],
         age: 0,
-        dob: new Date()
+        dob: new Date(),
       };
     },
   });
-  const { errors, touchedFields, dirtyFields, isDirty, isValid, isSubmitting, isSubmitted, isSubmitSuccessful, submitCount } = formState;
+  const {
+    errors,
+    touchedFields,
+    dirtyFields,
+    isDirty,
+    isValid,
+    isSubmitting,
+    isSubmitted,
+    isSubmitSuccessful,
+    submitCount,
+  } = formState;
 
-  console.log({ isSubmitting })
-  console.log({ isSubmitted })
-  console.log({ isSubmitSuccessful})
-  console.log({ submitCount})
+  console.log({ isSubmitting });
+  console.log({ isSubmitted });
+  console.log({ isSubmitSuccessful });
+  console.log({ submitCount });
 
   // console.log(touchedFields, dirtyFields, isDirty, isValid)
 
@@ -67,35 +86,42 @@ const Tester: NextPage = () => {
 
   const onSubmit = (data: FormValues) => {
     console.log("Form submitted", data);
+    // not recommend to call reset() onSubmit
   };
   const onError = (errors: FieldErrors<FormValues>) => {
-    console.log("Form Errors", errors)
-  }
+    console.log("Form Errors", errors);
+  };
 
   const handleGetValues = () => {
-    console.log('Values', getValues())
-    console.log('Username', getValues('username'))
-    console.log('Username and Channel', getValues(['username', 'channel']))
-  }
+    console.log("Values", getValues());
+    console.log("Username", getValues("username"));
+    console.log("Username and Channel", getValues(["username", "channel"]));
+  };
 
   const handleSetValue = () => {
-    setValue('username', 'Devil')
-    setValue('channel', '', {
+    setValue("username", "Devil");
+    setValue("channel", "", {
       shouldValidate: true,
       shouldDirty: true,
-      shouldTouch: true
-    })
-  }
+      shouldTouch: true,
+    });
+  };
 
-  const watchForm = watch()
-  const watchUsername = watch(['username', 'email'])
+  const watchForm = watch();
+  const watchUsername = watch(["username", "email"]);
 
   useEffect(() => {
-    const subscription = watch((value) => {
-      console.log(value)
-    })
-    return () => subscription.unsubscribe()
-  }, [watch])
+    if (isSubmitSuccessful) {
+      reset() // If you want to customize, you can pass options
+    }
+  }, [isSubmitSuccessful, reset])
+
+  // useEffect(() => {
+  //   const subscription = watch((value) => {
+  //     console.log(value);
+  //   });
+  //   return () => subscription.unsubscribe();
+  // }, [watch]);
 
   return (
     <div className={styles.container}>
@@ -169,7 +195,7 @@ const Tester: NextPage = () => {
           {...register("social.twitter", {
             // disabled: true,
             // disabled: watch('channel') === '',
-            required: { value: true, message: "Twitter is required" }
+            required: { value: true, message: "Twitter is required" },
           })}
         />
         <p className={styles.error}>{errors.social?.twitter?.message}</p>
@@ -211,10 +237,7 @@ const Tester: NextPage = () => {
                     {...register(`phNumbers.${index}.number`)}
                   />
                   {index > 0 && (
-                    <button
-                      type="button"
-                      onClick={() => remove(index)}
-                    >
+                    <button type="button" onClick={() => remove(index)}>
                       Remove phone number
                     </button>
                   )}
@@ -253,9 +276,21 @@ const Tester: NextPage = () => {
         />
         <p className={styles.error}>{errors.dob?.message}</p>
 
-        <button className={styles.button} disabled={!isDirty || !isValid || isSubmitting}>Submit</button>
-        <button type="button" onClick={handleGetValues}>Get values</button>
-        <button type="button" onClick={handleSetValue}>Set value</button>
+        <button
+          className={styles.button}
+          disabled={!isDirty || !isValid || isSubmitting}
+        >
+          Submit
+        </button>
+        <button type="button" onClick={handleGetValues}>
+          Get values
+        </button>
+        <button type="button" onClick={handleSetValue}>
+          Set value
+        </button>
+        <button type="button" onClick={() => reset()}>
+          Reset
+        </button>
       </form>
       <DevTool control={control} />
     </div>
