@@ -1,4 +1,4 @@
-import { createContext, useState, useCallback, useContext, PropsWithChildren } from "react";
+import { createContext, useState, useCallback, useContext, PropsWithChildren, useMemo } from "react";
 
 interface AcoordionContextType {
   value: Set<string>
@@ -17,7 +17,7 @@ const useAccordionContext = () => {
 }
 
 // AccordionRoot
-function AccordionRoot(props: PropsWithChildren) {
+function AccordionRoot(props: Readonly<PropsWithChildren>) {
   const [item, setItem] = useState<Set<string>>(new Set())
   const setter = useCallback((value: string) => {
     const newItem = new Set(item)
@@ -30,9 +30,10 @@ function AccordionRoot(props: PropsWithChildren) {
       setItem(newItem)
     }
   }, [item])
+  const contextValueObj = useMemo(() => ({ value: item, setter }), [item, setter])
 
   return (
-    <AccordionContext.Provider value={{ value: item, setter }}>
+    <AccordionContext.Provider value={contextValueObj}>
       {props.children}
       <pre>
         {item}
@@ -55,7 +56,7 @@ const useAccordionItemContext = () => {
   return context
 }
 // AccordionItem
-function AccordionItem({ value, children }: AccordionItemProps) {
+function AccordionItem({ value, children }: Readonly<AccordionItemProps>) {
   const style = {
     border: '1px solid white',
     padding: '10px',
@@ -71,7 +72,7 @@ function AccordionItem({ value, children }: AccordionItemProps) {
 }
 
 // AccordionTrigger
-function AccodionTrigger({ children }: { children: string }) {
+function AccodionTrigger({ children }: { readonly children: string }) {
   const { value, setter } = useAccordionContext()
   const label = useAccordionItemContext()
   const isExpended = value.has(label)
@@ -81,7 +82,10 @@ function AccodionTrigger({ children }: { children: string }) {
   }
 
   return (
-    <div onClick={() => setter(label)} style={style}>
+    <div
+      onClick={() => setter(label)}
+      style={style}
+    >
       <span>{children}</span>
       {isExpended ? '👇' : '👉'}
     </div>  
@@ -89,7 +93,7 @@ function AccodionTrigger({ children }: { children: string }) {
 }
 
 // AccordionContent
-function AccordionContent({ children }: PropsWithChildren) {
+function AccordionContent({ children }: Readonly<PropsWithChildren>) {
   const { value } = useAccordionContext()
   const label = useAccordionItemContext()
   const isExpended = value.has(label)
