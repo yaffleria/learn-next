@@ -11,6 +11,7 @@ const ContainerStyle = {
 };
 
 const Icons: NextPage = () => {
+  // IconContext.Provider 사용 시 Warning: Prop `style` did not match. 오류 발생
   return (
     <div style={ContainerStyle}>
       <FaReact color="purple" size="10rem" />
