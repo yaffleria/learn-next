@@ -1,7 +1,16 @@
 import { NextPage } from "next";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, ToastContent, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // https://fkhadra.github.io/react-toastify/how-to-style
+
+const CustomToast = ({ closeToast }: any) => {
+  return (
+    <div>
+      <h4>Something went wrong!</h4>
+      <button onClick={closeToast}>Close</button>
+    </div>
+  );
+};
 
 const Toast: NextPage = () => {
   const notify = () => {
@@ -13,6 +22,10 @@ const Toast: NextPage = () => {
       position: toast.POSITION.TOP_LEFT,
       theme: "light",
       hideProgressBar: true,
+    });
+    toast.warn(<CustomToast />, {
+      position: toast.POSITION.BOTTOM_LEFT,
+      autoClose: false,
     });
   };
 
