@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { ToastContainer, ToastContent, toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // https://fkhadra.github.io/react-toastify/how-to-style
 
